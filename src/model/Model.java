@@ -11,11 +11,14 @@ public class Model {
 	Matcher _match;
 	CharLister _lister;
 	
-	public Model (UI ui) {
-		_ui = ui;
+	public Model () {
 		_trans = new Translator();
 		_match = new Matcher();
 		_lister = new CharLister();
+	}
+	
+	public void addObserver (UI ui) {
+		_ui = ui;
 	}
 	
 	public void start () {

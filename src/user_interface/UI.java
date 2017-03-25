@@ -17,7 +17,8 @@ public class UI implements Runnable {
 	JTextPane _message;
 	
 	public UI () {
-		_model = new Model(this);
+		_model = new Model();
+		_model.addObserver(this);
 	}
 	
 	@Override

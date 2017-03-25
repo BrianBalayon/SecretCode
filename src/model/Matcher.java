@@ -4,19 +4,25 @@ import java.util.ArrayList;
 
 public class Matcher {
 
-	ArrayList<Character> _characters;
+	char[] _characters;
 	
+	/**
+	 * Creates a Matcher object with a array of char to compare with
+	 * 
+	 * Lowercase: 	0-25
+	 * Uppercase: 	26-51
+	 * Numbers: 	52-61
+	 */
 	public Matcher () {
-		_characters = new ArrayList<Character>();
-		//Lowercase: 0-25
-		//Uppercase: 26-51
-		//Numbers: 52-61
 		String toList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		for (int i=0; i<toList.length();i=i+1){
-			_characters.add(toList.charAt(i));
-		}
+		_characters = toList.
 	}
 
+	/**
+	 * Matches the alphanumeric characters of the input String to the array stored. 
+	 * Returns an array of int
+	 * 
+	 */
 	public ArrayList<Integer> match (ArrayList<Character> entry) {
 		ArrayList<Integer> matched = new ArrayList<Integer>();
 		int previousSize;
