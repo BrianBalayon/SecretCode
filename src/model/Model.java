@@ -1,43 +1,63 @@
 package model;
 
 import java.util.ArrayList;
-import user_interface.UI;
 
+import user_interface.UserInterface;
+
+/**
+ * The Model creates the Translator and CharMatcher
+ * @author brian
+ *
+ */
 public class Model {
 
-	UI _ui;
-	String _entry;
-	Translator _trans;
-	Matcher _match;
-	CharLister _lister;
+	private UserInterface _ui;
+	private ArrayList<String> _history;
+	private Translator _trans;
+	private CharMatcher _match;
+	private int _historySize;
 	
 	public Model () {
+		_history = new ArrayList<String>();
 		_trans = new Translator();
-		_match = new Matcher();
-		_lister = new CharLister();
+		_match = new CharMatcher();
 	}
 	
-	public void addObserver (UI ui) {
+	public void addObserver (UserInterface ui) {
 		_ui = ui;
 	}
 	
-	public void start () {
+	public void setHistorySize (int s) {
+		_historySize = s;
+	}
+	
+	public void code () {
 		String entry = _ui.getEntry();
 		if (entry.equals("")) { 
-			_ui.printOut("No entry detected");
+			addHistory("Please enter a valid input");
 		}
 		else {
-			_entry = entry; 
 			translate(entry);
 		}
 	}
 	
 	public void translate (String entry) {
-		ArrayList<Character> entryList = _lister.breakdown(entry);
-		ArrayList<Integer> message = _match.match(entryList);
-		message = _trans.rot13(message);
-		String toPrint = _match.restring(message, _entry);
-		_ui.printOut(toPrint);
+		ArrayList<Character> entryList = new ArrayList<Character>();
+		for (int i=0; i<entry.length(); i+=1) {
+			entryList.add(entry.charAt(i));
+		}
+		ArrayList<ArrayList<Integer>> mappedChars = _match.match(entryList);
+		ArrayList<ArrayList<Integer>> translated = _trans.rot13(mappedChars);
+		String toPrint = _match.restring(translated, entry);
+		addHistory(toPrint);
+		_ui.update(_history);
+	}
+	
+	public void addHistory (String s) {
+		for (int i=_historySize; i>1; i-=1) {
+			_history.set(i-1, _history.get(i-2));
+		}
+		_history.set(0, s);
 	}
 	
 }
