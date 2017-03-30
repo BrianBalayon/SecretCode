@@ -21,49 +21,48 @@ public class CharMatcher {
 		}
 	}
 
-/**
- * Creates a map of the chars of the input String and returns the map as a int[][]  
- * 
- * @param entry The String entered as char[]
- * @return a int[2][length of the String] (0: if the char was mapped  1: map of char.
- * int[0][x]==0 : the char was mapped  ==1: the char wasn't ) 
- */
-	public ArrayList<ArrayList<Integer>> match (ArrayList<Character> entry) {
-		ArrayList<ArrayList<Integer>> retVal = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> key = new ArrayList<Integer>();
-		ArrayList<Integer> map = new ArrayList<Integer>();
-		retVal.add(key);
-		retVal.add(map);
-		int positionInIteration = 0;
-		for (Character c : entry) {
-			for (int i=0; i<_chars.size(); i+=i) {
-				if (_chars.get(i).equals(c)) {
-					key.add(0);
-					map.add(i);
-					positionInIteration += 1;
-				}
+	private int mapChar (char compareTo) {
+		for (int i=0; i<_chars.size(); i+=1) {
+			if (_chars.get(i) == compareTo) {
+				return i;
 			}
-			if (c.equals(entry.get(positionInIteration))) {
-				key.add(1);
-				map.add(-1);
-				positionInIteration += 1;
-			}
+		}
+		return -1;
+	}
+	/**
+	 * Creates a map of the chars of the input String and returns the map as a int[][]
+	 *
+	 * @param entry The String entered as char[]
+	 * @return an ArrayList<ArrayList<Integer>>
+	 *     0: ArrayList<Integer> of the key whether or not the character was mapped
+	 *     1: ArrayList<Integer> of the character in _chars
+	 */
+	public ArrayList<Integer> match (ArrayList<Character> entry) {
+		ArrayList<Integer> retVal = new ArrayList<Integer>();
+		for (char c : entry) {
+			retVal.add(mapChar(c));
 		}
 		return retVal;
 	}
 
-	public String restring (ArrayList<ArrayList<Integer>> entry, String s) {
-		String restrung = "";
-		for (int i=0; i<s.length(); i=i+2) {
-			int x = entry.get(1).get(i);
-			switch (entry.get(0).get(i)) {
-				case 0: restrung = restrung + _chars.get(x);
-						break;
-				case 1: restrung = restrung + s.charAt(i);
-						break;
+	/**
+	 * Creates the String using the map and key of the input
+	 *
+	 * @param entry the key and map of the input String
+	 * @param s the original String
+	 * @return the translated String of concatenated characters
+	 */
+	public String restring (ArrayList<Integer> entry, String s) {
+		String retVal = "";
+		for (int i=0; i<s.length(); i+=1) {
+			int x = entry.get(i);
+			if (x == -1) {
+				retVal += s.charAt(i);
+			} else {
+				retVal += _chars.get(x);
 			}
 		}
-		return restrung;
+		return retVal;
 	}
 
 }

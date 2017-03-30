@@ -6,7 +6,7 @@ import model.Model;
 
 public class TranslateActionListener implements ActionListener {
 
-	Model _model;
+	private Model _model;
 	
 	public TranslateActionListener (Model m) {
 		_model = m;

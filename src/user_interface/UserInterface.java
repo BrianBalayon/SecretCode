@@ -18,7 +18,7 @@ public class UserInterface implements Runnable {
 	private JFrame _frame;
 	private JPanel _entryBar;
 	private JTextField _inputField;
-	private JTextPane[] _messages;
+	private ArrayList<JTextPane> _messages;
 	private int _historySize;
 	
 	public UserInterface () {
@@ -44,10 +44,10 @@ public class UserInterface implements Runnable {
 		_entryBar.add(startButton);
 		
 		//Message History
-		_messages = new JTextPane[_historySize];
+		_messages = new ArrayList<JTextPane>();
 		for (int i=0; i<_historySize; i+=1) {
-			_messages[i] = new JTextPane();
-			_frame.add(_messages[i]);
+			_messages.add(new JTextPane());
+			_frame.add(_messages.get(i));
 		}
 		
 		//Add components
@@ -60,8 +60,9 @@ public class UserInterface implements Runnable {
 	}
 	
 	/**
-	 * Gets the user input 
-	 * @return
+	 * Gets the user input
+	 *
+	 * @return the text in _inputField
 	 */
 	public String getEntry () {
 		String entry = _inputField.getText();
@@ -72,11 +73,13 @@ public class UserInterface implements Runnable {
 	/**
 	 * Sets the text in the history to the JTextPanes
 	 * 
-	 * @param s an array of String containing the history
+	 * @param history an ArrayList of String containing the history
 	 */
 	public void update (ArrayList<String> history) {
 		for (int i=0; i<_historySize; i+=1){
-			_messages[i].setText(history.get(i));
+			String text = history.get(i);
+			JTextPane view = _messages.get(i);
+			view.setText(text);
 		}
 	}
 	
